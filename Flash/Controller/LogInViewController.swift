@@ -23,6 +23,7 @@ class LogInViewController: UIViewController {
     
 
     private func UISetUp(){
+        navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
         logInButton.layer.cornerRadius = 5
         
     }

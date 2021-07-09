@@ -19,13 +19,13 @@ class ChatListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
         setUpCollectionView()
 
         
     }
     
     private func setUpCollectionView(){
-        
 
         
         chatListCollectionView.delegate = self

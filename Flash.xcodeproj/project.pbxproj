@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13B6C7AEE5C14E39717AF995 /* Pods_Flash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76D5D05496F6648FF4B4B1C0 /* Pods_Flash.framework */; };
 		1D4BC95C26974EAE0090F456 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4BC95B26974EAE0090F456 /* AppDelegate.swift */; };
 		1D4BC95E26974EAE0090F456 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4BC95D26974EAE0090F456 /* SceneDelegate.swift */; };
 		1D4BC96026974EAE0090F456 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4BC95F26974EAE0090F456 /* WelcomeViewController.swift */; };
@@ -18,6 +19,7 @@
 		1D4BC97426980C070090F456 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4BC97326980C070090F456 /* ChatListViewController.swift */; };
 		1D4BC97E269810960090F456 /* ContactCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4BC97C269810960090F456 /* ContactCollectionViewCell.swift */; };
 		1D4BC97F269810960090F456 /* ContactCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D4BC97D269810960090F456 /* ContactCollectionViewCell.xib */; };
+		1D4BC981269831AD0090F456 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D4BC980269831AC0090F456 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,10 @@
 		1D4BC97326980C070090F456 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
 		1D4BC97C269810960090F456 /* ContactCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewCell.swift; sourceTree = "<group>"; };
 		1D4BC97D269810960090F456 /* ContactCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCollectionViewCell.xib; sourceTree = "<group>"; };
+		1D4BC980269831AC0090F456 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		27A2BC73F8D9A477CF79B97D /* Pods-Flash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flash.release.xcconfig"; path = "Target Support Files/Pods-Flash/Pods-Flash.release.xcconfig"; sourceTree = "<group>"; };
+		66B77E5F6B52AD2BF1576C71 /* Pods-Flash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flash.debug.xcconfig"; path = "Target Support Files/Pods-Flash/Pods-Flash.debug.xcconfig"; sourceTree = "<group>"; };
+		76D5D05496F6648FF4B4B1C0 /* Pods_Flash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13B6C7AEE5C14E39717AF995 /* Pods_Flash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +59,8 @@
 			children = (
 				1D4BC95A26974EAE0090F456 /* Flash */,
 				1D4BC95926974EAE0090F456 /* Products */,
+				43FB852749E0AA0DF1BEF212 /* Pods */,
+				2016A8F67746722AC9572922 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +77,7 @@
 			children = (
 				1D4BC96126974EAE0090F456 /* Main.storyboard */,
 				1D4BC96926974EB00090F456 /* Info.plist */,
+				1D4BC980269831AC0090F456 /* GoogleService-Info.plist */,
 				1D4BC97526980CE00090F456 /* Supporting Files */,
 				1D4BC97626980CF70090F456 /* Controller */,
 				1D4BC97B26980D610090F456 /* View */,
@@ -106,6 +116,24 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		2016A8F67746722AC9572922 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				76D5D05496F6648FF4B4B1C0 /* Pods_Flash.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43FB852749E0AA0DF1BEF212 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				66B77E5F6B52AD2BF1576C71 /* Pods-Flash.debug.xcconfig */,
+				27A2BC73F8D9A477CF79B97D /* Pods-Flash.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -113,9 +141,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D4BC96C26974EB00090F456 /* Build configuration list for PBXNativeTarget "Flash" */;
 			buildPhases = (
+				C5EBF035F82E04F23A01DFC0 /* [CP] Check Pods Manifest.lock */,
 				1D4BC95426974EAE0090F456 /* Sources */,
 				1D4BC95526974EAE0090F456 /* Frameworks */,
 				1D4BC95626974EAE0090F456 /* Resources */,
+				EE2BB03D1CCA67D1338A5FA1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -165,12 +195,55 @@
 			files = (
 				1D4BC96826974EB00090F456 /* LaunchScreen.storyboard in Resources */,
 				1D4BC97F269810960090F456 /* ContactCollectionViewCell.xib in Resources */,
+				1D4BC981269831AD0090F456 /* GoogleService-Info.plist in Resources */,
 				1D4BC96526974EB00090F456 /* Assets.xcassets in Resources */,
 				1D4BC96326974EAE0090F456 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C5EBF035F82E04F23A01DFC0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Flash-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EE2BB03D1CCA67D1338A5FA1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Flash/Pods-Flash-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Flash/Pods-Flash-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Flash/Pods-Flash-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D4BC95426974EAE0090F456 /* Sources */ = {
@@ -327,6 +400,7 @@
 		};
 		1D4BC96D26974EB00090F456 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66B77E5F6B52AD2BF1576C71 /* Pods-Flash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -346,6 +420,7 @@
 		};
 		1D4BC96E26974EB00090F456 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27A2BC73F8D9A477CF79B97D /* Pods-Flash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

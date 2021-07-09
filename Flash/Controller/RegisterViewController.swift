@@ -26,7 +26,7 @@ class RegisterViewController: UIViewController {
 
 
     private func UISetup(){
-        
+        navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
         signUpButton.layer.cornerRadius = 5
     }
 

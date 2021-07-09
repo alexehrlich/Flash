@@ -175,8 +175,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A0j-xq-reF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="269"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Suche" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Z6-s8-WSL">
+                                        <rect key="frame" x="20" y="199" width="374" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="q1W-uz-k1w"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.80392156859999997" green="0.94117647059999998" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="7Z6-s8-WSL" secondAttribute="trailing" constant="20" id="iqf-QJ-B7D"/>
+                                    <constraint firstAttribute="bottom" secondItem="7Z6-s8-WSL" secondAttribute="bottom" constant="20" id="p8B-Pf-3yR"/>
+                                    <constraint firstItem="7Z6-s8-WSL" firstAttribute="leading" secondItem="A0j-xq-reF" secondAttribute="leading" constant="20" id="uwH-RL-dJN"/>
+                                </constraints>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="j6a-V6-97Y">
-                                <rect key="frame" x="0.0" y="140" width="414" height="702"/>
+                                <rect key="frame" x="0.0" y="269" width="414" height="627"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qzE-Xg-Hud">
                                     <size key="itemSize" width="128" height="128"/>
@@ -201,10 +221,14 @@
                         <viewLayoutGuide key="safeArea" id="LWT-VN-XWX"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="j6a-V6-97Y" firstAttribute="top" secondItem="LWT-VN-XWX" secondAttribute="top" id="BSE-En-tYu"/>
                             <constraint firstItem="LWT-VN-XWX" firstAttribute="trailing" secondItem="j6a-V6-97Y" secondAttribute="trailing" id="SOF-LO-j9S"/>
-                            <constraint firstItem="LWT-VN-XWX" firstAttribute="bottom" secondItem="j6a-V6-97Y" secondAttribute="bottom" constant="20" id="XG0-fl-pGM"/>
+                            <constraint firstItem="j6a-V6-97Y" firstAttribute="top" secondItem="A0j-xq-reF" secondAttribute="bottom" id="USJ-xY-jOt"/>
+                            <constraint firstItem="A0j-xq-reF" firstAttribute="height" secondItem="fC9-XM-fYs" secondAttribute="height" multiplier="0.3" id="cPT-zq-5gf"/>
                             <constraint firstItem="j6a-V6-97Y" firstAttribute="leading" secondItem="LWT-VN-XWX" secondAttribute="leading" id="e8c-m1-2hP"/>
+                            <constraint firstAttribute="bottom" secondItem="j6a-V6-97Y" secondAttribute="bottom" id="h8A-OE-DZ9"/>
+                            <constraint firstItem="A0j-xq-reF" firstAttribute="leading" secondItem="LWT-VN-XWX" secondAttribute="leading" id="iNL-rf-oPL"/>
+                            <constraint firstItem="LWT-VN-XWX" firstAttribute="trailing" secondItem="A0j-xq-reF" secondAttribute="trailing" id="nHU-8H-D1Q"/>
+                            <constraint firstItem="A0j-xq-reF" firstAttribute="top" secondItem="fC9-XM-fYs" secondAttribute="top" id="zTF-jD-wQI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Chats" id="tLb-1J-euH">
@@ -218,7 +242,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vxg-ep-hIg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3500.0000000000005" y="93.75"/>
+            <point key="canvasLocation" x="2918.840579710145" y="93.75"/>
         </scene>
         <!--Register-->
         <scene sceneID="UQW-xQ-Isk">
