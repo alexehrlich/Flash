@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,34 +20,35 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrM-WN-fSQ">
                         <rect key="frame" x="0.0" y="0.0" width="223" height="223"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="sse-a5-c4Y">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="sse-a5-c4Y">
                                 <rect key="frame" x="0.0" y="0.0" width="223" height="223"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbo-fx-crq">
-                                        <rect key="frame" x="0.0" y="0.0" width="223" height="111.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="223" height="156"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="i5Y-Ru-MTS">
-                                                <rect key="frame" x="61.5" y="6" width="100" height="99.5"/>
-                                                <color key="tintColor" name="TitleColorBlue"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="i5Y-Ru-MTS">
+                                                <rect key="frame" x="57" y="21.5" width="109" height="113"/>
+                                                <color key="tintColor" red="0.80392156859999997" green="0.94117647059999998" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="i5Y-Ru-MTS" secondAttribute="height" id="bK5-HS-jQI"/>
+                                                    <constraint firstAttribute="width" secondItem="i5Y-Ru-MTS" secondAttribute="height" multiplier="1:1" id="a51-S0-MVl"/>
                                                 </constraints>
+                                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="i5Y-Ru-MTS" firstAttribute="height" secondItem="dbo-fx-crq" secondAttribute="height" multiplier="0.9" id="BXh-31-kuv"/>
-                                            <constraint firstItem="i5Y-Ru-MTS" firstAttribute="centerY" secondItem="dbo-fx-crq" secondAttribute="centerY" id="d0K-Fr-6Mf"/>
-                                            <constraint firstItem="i5Y-Ru-MTS" firstAttribute="centerX" secondItem="dbo-fx-crq" secondAttribute="centerX" id="sey-qY-d8L"/>
+                                            <constraint firstItem="i5Y-Ru-MTS" firstAttribute="centerY" secondItem="dbo-fx-crq" secondAttribute="centerY" id="Nqu-8f-9sm"/>
+                                            <constraint firstItem="i5Y-Ru-MTS" firstAttribute="centerX" secondItem="dbo-fx-crq" secondAttribute="centerX" id="gq3-Xp-NSK"/>
+                                            <constraint firstItem="i5Y-Ru-MTS" firstAttribute="height" secondItem="dbo-fx-crq" secondAttribute="height" multiplier="0.7" id="ugv-wN-Cjz"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWm-Pf-p9g">
-                                        <rect key="frame" x="0.0" y="111.5" width="223" height="111.5"/>
+                                        <rect key="frame" x="0.0" y="156" width="223" height="67"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alex E." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Hh-di-84I">
-                                                <rect key="frame" x="10" y="10" width="203" height="91.5"/>
+                                                <rect key="frame" x="10" y="10" width="203" height="47"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                                <color key="textColor" name="TitleColorBlue"/>
+                                                <color key="textColor" red="0.80392156859999997" green="0.94117647059999998" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -61,9 +61,12 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="dbo-fx-crq" firstAttribute="height" secondItem="sse-a5-c4Y" secondAttribute="height" multiplier="0.7" id="PBG-P9-1UG"/>
+                                </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <color key="backgroundColor" name="TitleColorBlue"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="sse-a5-c4Y" secondAttribute="trailing" id="3VQ-XL-mQw"/>
                             <constraint firstItem="sse-a5-c4Y" firstAttribute="leading" secondItem="BrM-WN-fSQ" secondAttribute="leading" id="QCL-gt-49y"/>
@@ -83,17 +86,16 @@
             <size key="customSize" width="223" height="223"/>
             <connections>
                 <outlet property="cellBackgroundView" destination="BrM-WN-fSQ" id="DBg-m4-AYf"/>
+                <outlet property="chatNameLabel" destination="4Hh-di-84I" id="ww1-Ma-f4E"/>
+                <outlet property="contactProfileImage" destination="i5Y-Ru-MTS" id="OZC-r0-NmT"/>
             </connections>
             <point key="canvasLocation" x="338.40579710144931" y="167.07589285714286"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="person.crop.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="TitleColorBlue">
             <color red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
     </resources>
 </document>

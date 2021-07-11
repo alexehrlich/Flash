@@ -11,11 +11,17 @@ class ContactCollectionViewCell: UICollectionViewCell {
 
     //MARK: - IBOutlets
     @IBOutlet weak var cellBackgroundView: UIView!
+    @IBOutlet weak var contactProfileImage: UIImageView!
+    @IBOutlet weak var chatNameLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        cellBackgroundView.layer.cornerRadius = 5
+        let imageHeight = contactProfileImage.frame.size.height
+        cellBackgroundView.layer.cornerRadius = cellBackgroundView.frame.height * 0.08
+        contactProfileImage.layer.cornerRadius = imageHeight / 2
+        
     }
 
 }
