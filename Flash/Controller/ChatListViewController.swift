@@ -40,7 +40,6 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                     
                     if let requestedPerson = document.data()["requestedPerson"] as? String{
                         if requestedPerson == User.shared.email{
-                            print("Der Chat ist für mich!")
                             
                             //only add, if document ID is not in List
                             if !User.shared.chats.contains(document.documentID){
@@ -108,15 +107,15 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
         var names = [String]()
         
         for mail in User.shared.chatPartners{
+            
             db.collection("users").document(mail).getDocument { document, error in
                 if let document = document, document.exists{
-                    if let name = document.data()?["chatName"] as? String{
+                    if let name = document.data()?["chatname"] as? String{
                         names.append(name)
                     }
                 }
             }
         }
-        
         return names
     }
     
@@ -127,6 +126,7 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
             if let destVC = segue.destination as? ChatViewController{
                 destVC.title = User.shared.chatPartners[tappedCellIndex]
                 destVC.chatPartner = User.shared.chatPartners[tappedCellIndex]
+                destVC.chatID = User.shared.chats[tappedCellIndex]
             }
         }
     }
@@ -161,9 +161,9 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                         db.collection("users").document(User.shared.email).updateData(["chatPartners" : User.shared.chatPartners], completion: nil)
                         
                         //Create a new chat document
-                        newChat.setData(["sender" : User.shared.email, "requestedPerson" : emailString, "body" : "First Message", "timestamp" : Date().timeIntervalSince1970])
+                        newChat.setData(["sender" : User.shared.email, "requestedPerson" : emailString, "messages" : [String](), "timestamp" : Date().timeIntervalSince1970])
+                        listOfChatNames = fetchChatNamesForMailAdresses()
                         
-                        chatListCollectionView.reloadData()
                     }else{
                         print("User does not exist")
                     }

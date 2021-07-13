@@ -25,7 +25,32 @@ class ChatViewController: UIViewController {
     var messages = [Message]()
     
     var chatPartner = String()
+    var chatID = String()
     let db = Firestore.firestore()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        //Add snapshotListner
+        db.collection(chatID).order(by: "timeStamp").addSnapshotListener { querySnapshot, error in
+            
+            self.messages.removeAll()
+            
+            if let snapshotDocuments = querySnapshot?.documents{
+                
+                for document in snapshotDocuments{
+                    
+                    if let sender = document.data()["sender"] as? String, let body = document.data()["body"] as? String{
+                        
+                        self.messages.append(Message(sender: User(chatname: "TODO", email: sender), body: body))
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    self.messageTableView.reloadData()
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,17 +106,33 @@ class ChatViewController: UIViewController {
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         animateSendButton()
-        //1. Add message to Chat
-        
+
         if let messageBody = messageTextField.text{
             
-            let newMessage = db.collection(User.shared.email + chatPartner).document()
+            //1. Create new Message document
+            let newMessage = db.collection(chatID).document()
+            let newMessageID = newMessage.documentID
             
-            newMessage.setData(["sender" : User.shared.email, "body" : messageBody]) { error in
+            newMessage.setData(["sender" : User.shared.email, "body" : messageBody, "timeStamp" : Date().timeIntervalSince1970]) { error in
                 if let e = error {
                     print("Message could not be saved successfully, \(e)")
                 }else{
                     print("Message saved successfully")
+                }
+            }
+            
+            //Get the messages
+            var updatedMessages = [String]()
+            db.collection("chats").document(chatID).getDocument { document, error in
+                
+                if let document = document, document.exists{
+                    
+                    if let oldMessages = document.data()?["messages"] as? [String]{
+                        updatedMessages = oldMessages + [newMessageID]
+                        
+                        //Update the chat in Firebase
+                        self.db.collection("chats").document(self.chatID).updateData(["messages" : updatedMessages])
+                    }
                 }
             }
         }
