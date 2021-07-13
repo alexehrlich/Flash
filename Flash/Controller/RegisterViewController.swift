@@ -34,7 +34,7 @@ class RegisterViewController: UIViewController {
         spinner.startAnimating()
         signUpButton.titleLabel?.text = ""
        
-        if let emailString = emailTextField.text, let passwordString = passwordTextField.text, let chatname = chatnameTextField.text{
+        if let emailString = emailTextField.text, let chatname = chatnameTextField.text, let passwordString = passwordTextField.text{
             Auth.auth().createUser(withEmail: emailString, password: passwordString) { result, error in
                 
                 self.spinner.stopAnimating()
@@ -48,19 +48,12 @@ class RegisterViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                     print(error.localizedDescription)
                 }else{
-                    User.shared.enableUser(chatname: chatname, email: emailString, password: passwordString)
+                    User.shared.email = emailString
+                    User.shared.enableUser(chatname: chatname, email: emailString)
                     self.performSegue(withIdentifier: "registerToChatList", sender: self)
                 }
             }
             
-            //Zuordnung Username <-> Mail
-//            db.collection("users").addDocument(data: [emailString : ["chatname": [chatname], "pwd": [passwordString], "chatPartners" : [String](), "chats" : [Int]()]]) { error in
-//                if let e = error {
-//                    print("Something went wrong, \(e)")
-//                }else{
-//                    print("Data saved successfully")
-//                }
-//            }
             
             //look, if user already exists
             
@@ -69,7 +62,7 @@ class RegisterViewController: UIViewController {
                     if !receivedDoc.exists{
                         //Create new user
                         print("User does not exsist and will be created.")
-                        self.db.collection("users").document(emailString).setData(["chatname": [chatname], "pwd": [passwordString], "chatPartners" : [String](), "chats" : [Int]()]) { error in
+                        self.db.collection("users").document(emailString).setData(["chatname": chatname, "chatPartners" : [String](), "chats" : [String]()]) { error in
                             if let e = error {
                                 print("Something went wrong, \(e)")
                             }else{

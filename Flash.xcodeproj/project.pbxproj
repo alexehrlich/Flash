@@ -25,7 +25,6 @@
 		1D4BC981269831AD0090F456 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D4BC980269831AC0090F456 /* GoogleService-Info.plist */; };
 		1DB5A53D269AB15D00756904 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5A53B269AB15D00756904 /* MessageCell.swift */; };
 		1DB5A53E269AB15D00756904 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DB5A53C269AB15D00756904 /* MessageCell.xib */; };
-		1DFBC6382699F6CB008FC0AD /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFBC6372699F6CB008FC0AD /* Chat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +47,6 @@
 		1D4BC980269831AC0090F456 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1DB5A53B269AB15D00756904 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		1DB5A53C269AB15D00756904 /* MessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
-		1DFBC6372699F6CB008FC0AD /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		27A2BC73F8D9A477CF79B97D /* Pods-Flash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flash.release.xcconfig"; path = "Target Support Files/Pods-Flash/Pods-Flash.release.xcconfig"; sourceTree = "<group>"; };
 		66B77E5F6B52AD2BF1576C71 /* Pods-Flash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flash.debug.xcconfig"; path = "Target Support Files/Pods-Flash/Pods-Flash.debug.xcconfig"; sourceTree = "<group>"; };
 		76D5D05496F6648FF4B4B1C0 /* Pods_Flash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,7 +69,6 @@
 			children = (
 				1D24B9A326985C1B00FED9B4 /* User.swift */,
 				1D24B9A72699E4C800FED9B4 /* Message.swift */,
-				1DFBC6372699F6CB008FC0AD /* Chat.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -277,7 +274,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D4BC97426980C070090F456 /* ChatListViewController.swift in Sources */,
-				1DFBC6382699F6CB008FC0AD /* Chat.swift in Sources */,
 				1D4BC96026974EAE0090F456 /* WelcomeViewController.swift in Sources */,
 				1D4BC95C26974EAE0090F456 /* AppDelegate.swift in Sources */,
 				1DB5A53D269AB15D00756904 /* MessageCell.swift in Sources */,

@@ -22,14 +22,9 @@ class ChatViewController: UIViewController {
     //MARK: - NSLayoutContraints
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
     
-    var messages = [
-        Message(sender: User.shared.chatPartners!.first!, body: "Hi"),
-        Message(sender: User.shared, body: "Hey"),
-        Message(sender: User.shared.chatPartners!.first!, body: "Was geht?"),
-        Message(sender: User.shared, body: "ndcäkSDNVÄosbdnävoSFÄOsäfosOJN<DS<NFDIASJFBNJN<ÖSFJNAJLFAÖIDBAIFJÖ<FJSBö<aifjsbv< dfiavöifddav<if"),
-        ]
+    var messages = [Message]()
     
-    var chat = Chat()
+    var chatPartner = String()
     let db = Firestore.firestore()
     
     override func viewDidLoad() {
@@ -89,22 +84,17 @@ class ChatViewController: UIViewController {
         //1. Add message to Chat
         
         if let messageBody = messageTextField.text{
-            chat.addMessage(Message(sender: User.shared, body: messageBody))
-            let idString = String(chat.id)
-            print("ID: \(idString)")
             
-            print("Usere :\(User.shared.getEmail())")
+            let newMessage = db.collection(User.shared.email + chatPartner).document()
             
-            db.collection(idString).addDocument(data: ["a@b.com" : messageBody]) { error in
+            newMessage.setData(["sender" : User.shared.email, "body" : messageBody]) { error in
                 if let e = error {
-                    print("Something went wrong, \(e)")
+                    print("Message could not be saved successfully, \(e)")
                 }else{
-                    print("Data saved successfully")
+                    print("Message saved successfully")
                 }
             }
         }
-        //Load Chat into databse
-        
     }
 }
 

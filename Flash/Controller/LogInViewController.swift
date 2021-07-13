@@ -16,14 +16,16 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var logInButton: UIButton!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-
+    let db = Firestore.firestore()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Easy log in
         emailTextField.text = "a@b.com"
         passwordTextField.text = "123456"
-
+        
         UISetUp()
     }
     
@@ -51,6 +53,7 @@ class LogInViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                     print(error!.localizedDescription)
                 }else{
+                    User.shared.email = emailString
                     self.performSegue(withIdentifier: "logInToChatList", sender: self)
                 }
             }
@@ -63,5 +66,4 @@ class LogInViewController: UIViewController {
         logInButton.layer.cornerRadius = 5
         
     }
-
 }
