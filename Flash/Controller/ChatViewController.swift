@@ -31,22 +31,23 @@ class ChatViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         //Add snapshotListner
-        db.collection(chatID).order(by: "timeStamp").addSnapshotListener { querySnapshot, error in
-            
-            self.messages.removeAll()
-            
-            if let snapshotDocuments = querySnapshot?.documents{
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.db.collection(self.chatID).order(by: "timeStamp").addSnapshotListener { querySnapshot, error in
                 
-                for document in snapshotDocuments{
+                self.messages.removeAll()
+                
+                if let snapshotDocuments = querySnapshot?.documents{
                     
-                    if let sender = document.data()["sender"] as? String, let body = document.data()["body"] as? String{
-                        
-                        self.messages.append(Message(sender: User(chatname: "TODO", email: sender), body: body))
+                    for document in snapshotDocuments{
+                        if let sender = document.data()["sender"] as? String, let body = document.data()["body"] as? String{
+                            self.messages.append(Message(sender: User(chatname: "TODO", email: sender), body: body))
+                        }
                     }
-                }
-                
-                DispatchQueue.main.async {
-                    self.messageTableView.reloadData()
+                    
+                    DispatchQueue.main.async {
+                        self.messageTableView.reloadData()
+                        self.scrollMessageTableViewToBottom()
+                    }
                 }
             }
         }
@@ -54,6 +55,8 @@ class ChatViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        messageTextField.delegate = self
         
         messageTableView.delegate = self
         messageTableView.dataSource = self
@@ -102,36 +105,57 @@ class ChatViewController: UIViewController {
 
     }
     
+    private func scrollMessageTableViewToBottom(){
+        if self.messages.count > 0 {
+            self.messageTextField.text = ""
+            self.messageTableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+        }
+    }
+    
     //MARK: - IBActions
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         animateSendButton()
 
-        if let messageBody = messageTextField.text{
+        if let messageBody = messageTextField.text, messageBody != ""{
             
-            //1. Create new Message document
-            let newMessage = db.collection(chatID).document()
-            let newMessageID = newMessage.documentID
-            
-            newMessage.setData(["sender" : User.shared.email, "body" : messageBody, "timeStamp" : Date().timeIntervalSince1970]) { error in
-                if let e = error {
-                    print("Message could not be saved successfully, \(e)")
-                }else{
-                    print("Message saved successfully")
-                }
-            }
-            
-            //Get the messages
-            var updatedMessages = [String]()
-            db.collection("chats").document(chatID).getDocument { document, error in
+            DispatchQueue.global(qos: .userInitiated).async {
                 
-                if let document = document, document.exists{
+                //Empty the local messages
+                var updatedMessages = [String]()
+                
+                //Create a new Message-Oject
+                let newMessage = self.db.collection(self.chatID).document()
+                let newMessageID = newMessage.documentID
+                
+                //Update Data for the new message in firebase
+                newMessage.setData(["sender" : User.shared.email, "body" : messageBody, "timeStamp" : Date().timeIntervalSince1970]) { error in
+                    if let e = error {
+                        print("Message could not be saved successfully, \(e)")
+                    }else{
+                        print("Message saved successfully")
+                    }
+                }
+                
+                //Get the current database Data of the current chat
+                self.db.collection("chats").document(self.chatID).getDocument { document, error in
                     
-                    if let oldMessages = document.data()?["messages"] as? [String]{
-                        updatedMessages = oldMessages + [newMessageID]
+                    if let document = document, document.exists{
                         
-                        //Update the chat in Firebase
-                        self.db.collection("chats").document(self.chatID).updateData(["messages" : updatedMessages])
+                        //Store the current messages Array
+                        if let oldMessages = document.data()?["messages"] as? [String]{
+                            
+                            //Add new generated Messages to the loacal storage (DataBase for table view)
+                            updatedMessages = oldMessages + [newMessageID]
+                            
+                            //Push the local changes to firebase
+                            self.db.collection("chats").document(self.chatID).updateData(["messages" : updatedMessages])
+                            
+                            //Scroll to the bottom of the chat table view
+                            DispatchQueue.main.async {
+                                self.scrollMessageTableViewToBottom()
+                            }
+                        }
                     }
                 }
             }
@@ -166,12 +190,15 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             
             return messageCell
         }
-        
         return UITableViewCell()
     }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        messageTextField.resignFirstResponder()
+}
+
+extension ChatViewController: UITextFieldDelegate{
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollMessageTableViewToBottom()
     }
 }
+
+
 

@@ -19,7 +19,7 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
     
-    var listOfChatNames = [String]()
+    
     
     
     //State Variables
@@ -32,26 +32,40 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
         //Initialize the Model
         updateModelfromFirebaseDataBase()
         
-        //Add SnapshotListner for chats
-        db.collection("chats").addSnapshotListener { snapshot, error in
+        //Add SnapshotListner for chats. Listen to changes of the chats collection
+        DispatchQueue.global(qos: .userInitiated).async {
             
-            if let snapshot = snapshot{
-                for document in snapshot.documents{
+            self.db.collection(K.Firestore.chatIDCollection).addSnapshotListener { snapshot, error in
+                
+                if let e = error{
+                    print("Chats could not be loaded, \(e.localizedDescription)")
+                }else{
                     
-                    if let requestedPerson = document.data()["requestedPerson"] as? String{
-                        if requestedPerson == User.shared.email{
+                    if let snapshot = snapshot{
+                        for document in snapshot.documents{
                             
-                            //only add, if document ID is not in List
-                            if !User.shared.chats.contains(document.documentID){
-                                if let sender = document.data()["sender"] as? String{
-
-                                    User.shared.chatPartners.append(sender)
-                                    User.shared.chats.append(document.documentID)
+                            let chatData = document.data()
+                            let chatID = document.documentID
+                            
+                            //Unpack the received chatData
+                            if let requestedPersonMail = chatData[K.Firestore.requestedUserMailField] as? String, let senderMail = chatData[K.Firestore.senderMailField] as? String, let senderName = chatData[K.Firestore.senderNameField] as? String{
+                                
+                                //If the requested Person is User.shared, the message is detinated to this device
+                                //Only update, if chat is not already in list chatPArtners
+                                if requestedPersonMail == User.shared.email && !User.shared.chats.contains(where: { chat in
+                                    chat.id == chatID
+                                }){
                                     
-                                    self.db.collection("users").document(User.shared.email).updateData(["chats" : User.shared.chats, "chatPartners" : User.shared.chatPartners])
-                                    
-                                    self.chatListCollectionView.reloadData()
-
+                                        //Update the local model with the new chat
+                                        let newChat = Chat(partnerMail: senderMail, partnerName: senderName, id: chatID)
+                                        User.shared.chats.append(newChat)
+                                        
+                                        //Push local changes to firebase DB
+                                    self.db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.chatIDsField : User.shared.getChatIDs(), K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(), K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames()])
+                                        
+                                        DispatchQueue.main.async {
+                                            self.chatListCollectionView.reloadData()
+                                        }
                                 }
                             }
                         }
@@ -59,10 +73,10 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             }
         }
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        //TEST: Comment out, log user aout, log another user in and check if the right data is shown
         chatListCollectionView.reloadData()
     }
     
@@ -72,51 +86,42 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
         navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
         navigationItem.hidesBackButton = true
         
-        setUpCollectionView()
+        //Setup collectionView
+        chatListCollectionView.delegate = self
+        chatListCollectionView.dataSource = self
+        chatListCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "chatContactCell")
         
         searchBackground.layer.cornerRadius = searchBackground.frame.height * 0.2
         
         searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [.font : UIFont(name: "Helvetica Neue", size: 20)!, .foregroundColor : UIColor.lightGray])
-        
     }
     
-    private func setUpCollectionView(){
-        chatListCollectionView.delegate = self
-        chatListCollectionView.dataSource = self
-        chatListCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "chatContactCell")
-    }
     
+    //Fetch the data from Firebase for the local entered email adress
     private func updateModelfromFirebaseDataBase(){
-        db.collection("users").document(User.shared.email).getDocument { document, error in
-            if let document = document, document.exists{
-                let data = document.data()
-                
-                if let chatPartners = data?["chatPartners"] as? [String], let chatName = data?["chatname"] as? String, let chats = data?["chats"] as? [String]{
-                    User.shared.chatPartners = chatPartners
-                    User.shared.chatname = chatName
-                    User.shared.chats = chats
-                }
-            }
-        }
-        listOfChatNames = fetchChatNamesForMailAdresses()
-        chatListCollectionView.reloadData()
-    }
-    
-    private func fetchChatNamesForMailAdresses() -> [String] {
         
-        var names = [String]()
-        
-        for mail in User.shared.chatPartners{
-            
-            db.collection("users").document(mail).getDocument { document, error in
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.db.collection(K.Firestore.userCollection).document(User.shared.email).getDocument { [self] document, error in
                 if let document = document, document.exists{
-                    if let name = document.data()?["chatname"] as? String{
-                        names.append(name)
+                    let data = document.data()
+                    
+                    if let chatPartnersMail = data?[K.Firestore.chatPartnersMailField] as? [String],  let chatPartnersName = data?[K.Firestore.chatPartnersNameField] as? [String],let chatName = data?[K.Firestore.chatNameField] as? String, let chats = data?[K.Firestore.chatIDsField] as? [String]{
+                        
+                        User.shared.chats.removeAll()
+                        User.shared.chatname = chatName
+
+                        for i in chatPartnersMail.indices{
+                            User.shared.chats.append(Chat(partnerMail: chatPartnersMail[i], partnerName: chatPartnersName[i], id: chats[i]))
+                        }
+                        
+                        DispatchQueue.main.async {
+                            self.chatListCollectionView.reloadData()
+                        }
+                        
                     }
                 }
             }
         }
-        return names
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -124,16 +129,15 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
         if segue.identifier == "ListToChat"{
             
             if let destVC = segue.destination as? ChatViewController{
-                destVC.title = User.shared.chatPartners[tappedCellIndex]
-                destVC.chatPartner = User.shared.chatPartners[tappedCellIndex]
-                destVC.chatID = User.shared.chats[tappedCellIndex]
+                destVC.title = User.shared.getChatPartnerNames()[tappedCellIndex]
+                destVC.chatPartner = User.shared.getChatPartnerMails()[tappedCellIndex]
+                destVC.chatID = User.shared.getChatIDs()[tappedCellIndex]
             }
         }
     }
     
     //MARK: - IBActions
     @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
-        
         navigationController?.popToRootViewController(animated: true)
     }
     
@@ -144,30 +148,56 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
         createAlert.addTextField(configurationHandler: nil)
         createAlert.textFields?.first?.placeholder = "Gebe hier die email-Adresse ein"
         let goAction = UIAlertAction(title: "Los", style: .default) { [self] action in
-            //Suche den Nutzer und erstelle den Chat
-            if let emailString = createAlert.textFields?.first?.text, emailString != ""{
-                self.db.collection("users").document(emailString).getDocument { document, error in
+            
+            //Search user and create new chat, check that something is entered, the entered User is not himself or the chat is already created with the person.
+            if let requestedPersonMailString = createAlert.textFields?.first?.text, requestedPersonMailString != "", requestedPersonMailString != User.shared.email, !User.shared.chats.contains(where: { chat in
+                chat.partnerMail == requestedPersonMailString
+            }){
+                
+                DispatchQueue.global(qos: .userInitiated).async {
                     
-                    if let document = document, document.exists{
+                    //Get the current data from the entered user
+                    self.db.collection(K.Firestore.userCollection).document(requestedPersonMailString).getDocument { document, error in
                         
-                        //Add the chat reference to the involved users
-                        let newChat = db.collection("chats").document()
-                        let newChatID = newChat.documentID
-                        
-                        User.shared.chats.append(newChatID)
-                        User.shared.chatPartners.append(emailString)
-                        
-                        db.collection("users").document(User.shared.email).updateData(["chats" : User.shared.chats], completion: nil)
-                        db.collection("users").document(User.shared.email).updateData(["chatPartners" : User.shared.chatPartners], completion: nil)
-                        
-                        //Create a new chat document
-                        newChat.setData(["sender" : User.shared.email, "requestedPerson" : emailString, "messages" : [String](), "timestamp" : Date().timeIntervalSince1970])
-                        listOfChatNames = fetchChatNamesForMailAdresses()
-                        
-                    }else{
-                        print("User does not exist")
+                        if let document = document, document.exists{
+                            
+                            //Get the data of the requested user
+                            if let chatName = document.data()?[K.Firestore.chatNameField] as? String, let oldChatPartnerMail = document.data()?[K.Firestore.chatPartnersMailField] as? [String], let oldChatPartnersName = document.data()?[K.Firestore.chatPartnersNameField] as? [String], let oldUserChatIDs = document.data()?[K.Firestore.chatIDsField] as? [String]{
+                                
+                                //create a new chat with a auto-generated ID
+                                let newChat = db.collection(K.Firestore.chatIDCollection).document()
+                                let newChatID = newChat.documentID
+                                
+                                //--UPDATE THE REQUESTED USER IN FIREBASE
+                                let newChatIDs = oldUserChatIDs + [newChatID]
+                                let newChatPartnersMail = oldChatPartnerMail + [User.shared.email]
+                                let newChatPartnersName = oldChatPartnersName + [User.shared.chatname]
+                                
+                                db.collection(K.Firestore.userCollection).document(requestedPersonMailString).updateData([K.Firestore.chatIDsField : newChatIDs, K.Firestore.chatPartnersMailField : newChatPartnersMail, K.Firestore.chatPartnersNameField : newChatPartnersName], completion: nil)
+                                
+                                
+                                
+                                //--UPDATE THE REQUESTING PERSON LOCALLY AND IN FIREBASE
+                                //Add this ID and the chatPartners Mail to the current users local Model
+                                User.shared.chats.append(Chat(partnerMail: requestedPersonMailString, partnerName: chatName, id: newChatID))
+                                
+                                //Push the local updated changes to the firebase DB for the current user
+                                db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.chatIDsField : User.shared.getChatIDs(), K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(), K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames()], completion: nil)
+
+                                //--UPDATE THE CHAT IN FIRESTORE
+                                newChat.setData([K.Firestore.senderMailField : User.shared.email, K.Firestore.senderNameField : User.shared.chatname, K.Firestore.requestedUserMailField : requestedPersonMailString, K.Firestore.requestedUserNameField : chatName, K.Firestore.messageIDsField : [String]()])
+                                
+                                DispatchQueue.main.async {
+                                    self.chatListCollectionView.reloadData()
+                                }
+                            }
+                        }else{
+                            print("User does not exist")
+                        }
                     }
                 }
+            }else{
+                print("User is yourself or chat with requested user already exists")
             }
         }
         
@@ -186,14 +216,15 @@ extension ChatListViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return User.shared.chatPartners.count
+        return User.shared.chats.count
+        //return User.shared.chatPartners.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if let cell = chatListCollectionView.dequeueReusableCell(withReuseIdentifier: "chatContactCell", for: indexPath) as? ContactCollectionViewCell{
             
-            cell.chatNameLabel.text = User.shared.chatPartners[indexPath.row]
+            cell.chatNameLabel.text = User.shared.chats[indexPath.row].partnerName
             
             return cell
         }

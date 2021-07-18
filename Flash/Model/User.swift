@@ -11,8 +11,9 @@ struct User: Hashable {
 
     var chatname = String()
     var email = String()
-    var chatPartners = [String]()
-    var chats = [String]()
+    var chats = [Chat]()
+    
+    var chatPartnerNamesDictioanry = [String : String]()
     
     //Singleton
     static var shared = User()
@@ -34,5 +35,36 @@ struct User: Hashable {
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.email == rhs.email
     }
+    
+    func getChatIDs()-> [String]{
+        var temp = [String]()
+        for chat in chats{
+            temp.append(chat.id)
+        }
+        return temp
+    }
+    
+    func getChatPartnerMails()-> [String]{
+        var temp = [String]()
+        for chat in chats{
+            temp.append(chat.partnerMail)
+        }
+        return temp
+    }
+    
+    func getChatPartnerNames()-> [String]{
+        var temp = [String]()
+        for chat in chats{
+            temp.append(chat.partnerName)
+        }
+        return temp
+    }
+}
+
+struct Chat: Hashable{
+    var partnerMail: String
+    var partnerName: String
+    var id: String
+    
 }
 

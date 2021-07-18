@@ -33,28 +33,30 @@ class LogInViewController: UIViewController {
     @IBAction func logInButtonPressed(_ sender: UIButton) {
         
         spinner.startAnimating()
-        self.logInButton.titleLabel?.text = ""
+        self.logInButton.setTitle("", for: .normal)
         
         if let emailString = emailTextField.text, let passwordString = passwordTextField.text {
             
-            Auth.auth().signIn(withEmail: emailString, password: passwordString) { result, error in
-                
-                self.spinner.stopAnimating()
-                self.logInButton.titleLabel?.text = "Log In"
-                
-                if error != nil {
-                    let alert = UIAlertController(title: "Oops :-(", message: error?.localizedDescription, preferredStyle: .alert)
-                    let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
-                    let segueAction = UIAlertAction(title: "Create user", style: .default) { action in
-                        self.performSegue(withIdentifier: "logInToRegister", sender: self)
+            DispatchQueue.global(qos: .userInitiated).async {
+                Auth.auth().signIn(withEmail: emailString, password: passwordString) { result, error in
+                    
+                    self.spinner.stopAnimating()
+                    self.logInButton.setTitle("Log In", for: .normal)
+                    
+                    if error != nil {
+                        let alert = UIAlertController(title: "Oops :-(", message: error?.localizedDescription, preferredStyle: .alert)
+                        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
+                        let segueAction = UIAlertAction(title: "Create user", style: .default) { action in
+                            self.performSegue(withIdentifier: "logInToRegister", sender: self)
+                        }
+                        alert.addAction(okayAction)
+                        alert.addAction(segueAction)
+                        self.present(alert, animated: true, completion: nil)
+                        print(error!.localizedDescription)
+                    }else{
+                        User.shared.email = emailString
+                        self.performSegue(withIdentifier: "logInToChatList", sender: self)
                     }
-                    alert.addAction(okayAction)
-                    alert.addAction(segueAction)
-                    self.present(alert, animated: true, completion: nil)
-                    print(error!.localizedDescription)
-                }else{
-                    User.shared.email = emailString
-                    self.performSegue(withIdentifier: "logInToChatList", sender: self)
                 }
             }
         }
@@ -64,6 +66,5 @@ class LogInViewController: UIViewController {
     private func UISetUp(){
         navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
         logInButton.layer.cornerRadius = 5
-        
     }
 }
