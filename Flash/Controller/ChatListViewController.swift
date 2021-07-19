@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
+class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
     
     //MARK: - IBOutlets
     @IBOutlet weak var chatListCollectionView: UICollectionView!
@@ -19,16 +19,32 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
     
-    
-    
+    var filteredChats = User.shared.chats
     
     //State Variables
     var tappedCellIndex = 0
     
     let db = Firestore.firestore()
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
+        navigationItem.hidesBackButton = true
+        
+        //Setup collectionView
+        chatListCollectionView.delegate = self
+        chatListCollectionView.dataSource = self
+        chatListCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "chatContactCell")
+        
+        searchBackground.layer.cornerRadius = searchBackground.frame.height * 0.2
+        
+        searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [.font : UIFont(name: "Helvetica Neue", size: 20)!, .foregroundColor : UIColor.lightGray])
+        searchTextField.delegate = self
+        searchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        
+        
+        //------
         //Initialize the Model
         updateModelfromFirebaseDataBase()
         
@@ -56,16 +72,22 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                                     chat.id == chatID
                                 }){
                                     
-                                        //Update the local model with the new chat
-                                        let newChat = Chat(partnerMail: senderMail, partnerName: senderName, id: chatID)
-                                        User.shared.chats.append(newChat)
-                                        
-                                        //Push local changes to firebase DB
+                                    //Update the local model with the new chat
+                                    let newChat = Chat(partnerMail: senderMail, partnerName: senderName, id: chatID)
+                                    User.shared.chats.append(newChat)
+                                    
+                                    //Push local changes to firebase DB
                                     self.db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.chatIDsField : User.shared.getChatIDs(), K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(), K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames()])
-                                        
-                                        DispatchQueue.main.async {
-                                            self.chatListCollectionView.reloadData()
-                                        }
+                                    
+                                    if let lowercasedSearchString = self.searchTextField.text?.lowercased(){
+                                        self.filteredChats = User.shared.chats.filter { $0.partnerName.lowercased().hasPrefix(lowercasedSearchString)}
+                                    }else if self.searchTextField.text == ""{
+                                        self.filteredChats = User.shared.chats
+                                    }
+                                    
+                                    DispatchQueue.main.async {
+                                        self.chatListCollectionView.reloadData()
+                                    }
                                 }
                             }
                         }
@@ -73,27 +95,6 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             }
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        //TEST: Comment out, log user aout, log another user in and check if the right data is shown
-        chatListCollectionView.reloadData()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
-        navigationItem.hidesBackButton = true
-        
-        //Setup collectionView
-        chatListCollectionView.delegate = self
-        chatListCollectionView.dataSource = self
-        chatListCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "chatContactCell")
-        
-        searchBackground.layer.cornerRadius = searchBackground.frame.height * 0.2
-        
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [.font : UIFont(name: "Helvetica Neue", size: 20)!, .foregroundColor : UIColor.lightGray])
     }
     
     
@@ -109,15 +110,16 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                         
                         User.shared.chats.removeAll()
                         User.shared.chatname = chatName
-
+                        
                         for i in chatPartnersMail.indices{
                             User.shared.chats.append(Chat(partnerMail: chatPartnersMail[i], partnerName: chatPartnersName[i], id: chats[i]))
                         }
                         
+                        filteredChats = User.shared.chats
+                        
                         DispatchQueue.main.async {
                             self.chatListCollectionView.reloadData()
                         }
-                        
                     }
                 }
             }
@@ -180,10 +182,11 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate {
                                 //--UPDATE THE REQUESTING PERSON LOCALLY AND IN FIREBASE
                                 //Add this ID and the chatPartners Mail to the current users local Model
                                 User.shared.chats.append(Chat(partnerMail: requestedPersonMailString, partnerName: chatName, id: newChatID))
+                                filteredChats = User.shared.chats
                                 
                                 //Push the local updated changes to the firebase DB for the current user
                                 db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.chatIDsField : User.shared.getChatIDs(), K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(), K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames()], completion: nil)
-
+                                
                                 //--UPDATE THE CHAT IN FIRESTORE
                                 newChat.setData([K.Firestore.senderMailField : User.shared.email, K.Firestore.senderNameField : User.shared.chatname, K.Firestore.requestedUserMailField : requestedPersonMailString, K.Firestore.requestedUserNameField : chatName, K.Firestore.messageIDsField : [String]()])
                                 
@@ -216,15 +219,14 @@ extension ChatListViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return User.shared.chats.count
-        //return User.shared.chatPartners.count
+        return filteredChats.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if let cell = chatListCollectionView.dequeueReusableCell(withReuseIdentifier: "chatContactCell", for: indexPath) as? ContactCollectionViewCell{
             
-            cell.chatNameLabel.text = User.shared.chats[indexPath.row].partnerName
+            cell.chatNameLabel.text = filteredChats[indexPath.row].partnerName
             
             return cell
         }
@@ -266,3 +268,17 @@ extension ChatListViewController: UICollectionViewDelegate, UICollectionViewData
         searchTextField.resignFirstResponder()
     }
 }
+
+extension ChatListViewController: UITextFieldDelegate{
+    
+    @objc func textFieldDidChange(){
+        if let lowercasedSearchString = searchTextField.text?.lowercased(){
+            filteredChats = User.shared.chats.filter { $0.partnerName.lowercased().hasPrefix(lowercasedSearchString)}
+        }else if searchTextField.text == ""{
+            filteredChats = User.shared.chats
+        }
+        
+        chatListCollectionView.reloadData()
+    }
+}
+
