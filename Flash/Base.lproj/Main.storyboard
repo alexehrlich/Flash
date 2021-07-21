@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="SCq-aE-Hqn">
-                                <rect key="frame" x="20.5" y="762" width="373" height="50"/>
+                                <rect key="frame" x="20.5" y="790" width="373" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yM7-OM-AFe">
                                         <rect key="frame" x="0.0" y="0.0" width="159" height="50"/>
@@ -47,16 +47,69 @@
                                     <constraint firstAttribute="height" constant="50" id="AAT-I9-j4J"/>
                                 </constraints>
                             </stackView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rV-uP-jU1">
+                                <rect key="frame" x="20.5" y="168.5" width="373" height="559"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wm3-hV-Wiw" userLabel="Page 3" customClass="PageThreeView" customModule="Flash" customModuleProvider="target">
+                                        <rect key="frame" x="746" y="0.0" width="372.5" height="559"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="haN-dr-HoD" userLabel="Page1" customClass="PageOneView" customModule="Flash" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="373" height="559"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nu0-e2-Qm6" userLabel="Page2" customClass="PageTwoView" customModule="Flash" customModuleProvider="target">
+                                        <rect key="frame" x="373" y="0.0" width="373" height="559"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                        <color key="tintColor" red="0.52156862749999999" green="0.83921568629999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="haN-dr-HoD" firstAttribute="leading" secondItem="5rV-uP-jU1" secondAttribute="leading" id="01Y-Xd-GPR"/>
+                                    <constraint firstItem="wm3-hV-Wiw" firstAttribute="width" secondItem="5rV-uP-jU1" secondAttribute="width" id="4pn-dF-qla"/>
+                                    <constraint firstItem="wm3-hV-Wiw" firstAttribute="leading" secondItem="nu0-e2-Qm6" secondAttribute="trailing" id="61n-Sq-wic"/>
+                                    <constraint firstAttribute="trailing" secondItem="wm3-hV-Wiw" secondAttribute="trailing" id="9NM-iV-yvw"/>
+                                    <constraint firstItem="wm3-hV-Wiw" firstAttribute="top" secondItem="5rV-uP-jU1" secondAttribute="top" id="EKV-bW-S91"/>
+                                    <constraint firstAttribute="width" secondItem="5rV-uP-jU1" secondAttribute="height" multiplier="1:1.5" id="Exz-Ph-Vpp"/>
+                                    <constraint firstAttribute="bottom" secondItem="nu0-e2-Qm6" secondAttribute="bottom" id="KIh-v9-1Jh"/>
+                                    <constraint firstItem="haN-dr-HoD" firstAttribute="width" secondItem="5rV-uP-jU1" secondAttribute="width" id="McE-T4-Itu"/>
+                                    <constraint firstAttribute="bottom" secondItem="wm3-hV-Wiw" secondAttribute="bottom" id="Rs2-8y-ng6"/>
+                                    <constraint firstItem="haN-dr-HoD" firstAttribute="height" secondItem="5rV-uP-jU1" secondAttribute="height" id="Tzw-PU-jZf"/>
+                                    <constraint firstItem="nu0-e2-Qm6" firstAttribute="width" secondItem="5rV-uP-jU1" secondAttribute="width" multiplier="1.00151" id="ZrG-ma-dS7"/>
+                                    <constraint firstAttribute="bottom" secondItem="haN-dr-HoD" secondAttribute="bottom" id="cr6-aa-QnG"/>
+                                    <constraint firstItem="haN-dr-HoD" firstAttribute="top" secondItem="5rV-uP-jU1" secondAttribute="top" id="jAO-eT-gLU"/>
+                                    <constraint firstItem="nu0-e2-Qm6" firstAttribute="height" secondItem="5rV-uP-jU1" secondAttribute="height" id="k9B-gi-9tR"/>
+                                    <constraint firstItem="nu0-e2-Qm6" firstAttribute="top" secondItem="5rV-uP-jU1" secondAttribute="top" id="kTO-7E-QYf"/>
+                                    <constraint firstItem="nu0-e2-Qm6" firstAttribute="leading" secondItem="haN-dr-HoD" secondAttribute="trailing" id="nPe-u0-7rf"/>
+                                    <constraint firstItem="wm3-hV-Wiw" firstAttribute="height" secondItem="5rV-uP-jU1" secondAttribute="height" id="ttd-tV-5H5"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="RTA-bv-qzg"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Ppd-eU-bhw"/>
+                            </scrollView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="nac-gb-Ou3">
+                                <rect key="frame" x="146.5" y="757.5" width="121.5" height="27.5"/>
+                                <color key="pageIndicatorTintColor" red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="0.50444930120809184" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="currentPageIndicatorTintColor" name="TitleColorBlue"/>
+                            </pageControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.80392156862745101" green="0.94117647058823528" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="5rV-uP-jU1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5PT-uE-DGd"/>
                             <constraint firstItem="SCq-aE-Hqn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A6k-z0-LAS"/>
+                            <constraint firstItem="5rV-uP-jU1" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="Dgg-WA-yFe"/>
+                            <constraint firstItem="nac-gb-Ou3" firstAttribute="top" secondItem="5rV-uP-jU1" secondAttribute="bottom" constant="30" id="NEI-a1-UYT"/>
+                            <constraint firstItem="5rV-uP-jU1" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eWm-dy-eK3"/>
                             <constraint firstItem="SCq-aE-Hqn" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="gA4-Sc-rmJ"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SCq-aE-Hqn" secondAttribute="bottom" constant="50" id="vKi-Qf-vao"/>
+                            <constraint firstItem="nac-gb-Ou3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ngX-68-SYK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SCq-aE-Hqn" secondAttribute="bottom" constant="22" id="vKi-Qf-vao"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Welcome" id="Ygx-Ow-Fh0"/>
+                    <connections>
+                        <outlet property="pageControl" destination="nac-gb-Ou3" id="4mS-Zi-fbV"/>
+                        <outlet property="scrollView" destination="5rV-uP-jU1" id="C8o-al-OKb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -572,7 +625,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Goe-tG-0bj"/>
+        <segue reference="9xb-Lf-uag"/>
         <segue reference="P7x-vr-N85"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -580,13 +633,19 @@
         <image name="paperplane.fill" catalog="system" width="128" height="118"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <namedColor name="TitleColorBlue">
-            <color red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.16078431372549018" green="0.23137254901960785" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
