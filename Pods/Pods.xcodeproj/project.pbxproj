@@ -76,7 +76,6 @@
 		03474C386CF855499139DB1F56B73A14 /* threadpool.h in Copy src/core/lib/iomgr/executor Private Headers */ = {isa = PBXBuildFile; fileRef = EEE9F305783D9EFC70FCF0A2089A3478 /* threadpool.h */; };
 		034862F45DE72C47148971A54A7F8F2B /* alts_crypter.h in Headers */ = {isa = PBXBuildFile; fileRef = 87BB187F908AD3B67986A5690C5A6877 /* alts_crypter.h */; };
 		0349B0F1AF55A0CCE3358FFA7A468F96 /* GULAppDelegateSwizzler_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 925A64F142166F5EFAA31244449B5DDE /* GULAppDelegateSwizzler_Private.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		034EF25DA20B4272E0F62269FAB387F4 /* leveldb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 613743BE80D369D719D5C3423DCC2121 /* leveldb.framework */; };
 		035E2C6AF4D91DD3F530B7D585AAF714 /* sys_epoll_wrapper.h in Copy src/core/lib/iomgr Private Headers */ = {isa = PBXBuildFile; fileRef = 2280D008864702A14F8A10FDAA1D28F1 /* sys_epoll_wrapper.h */; };
 		035F7A88A830EB36B20BB52AEB6E6901 /* sensitive.upb.h in Copy src/core/ext/upb-generated/udpa/annotations Private Headers */ = {isa = PBXBuildFile; fileRef = A9FD6F279E27FAB648E27E6199BBC8C7 /* sensitive.upb.h */; };
 		036D3949AF5DC2230B738E02C7C9B29F /* sensitive.upb.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E36C35C581C25BE0AEB96BD7F2E09B3 /* sensitive.upb.h */; };
@@ -9492,7 +9491,6 @@
 		61180EB165350B03B5238B67F2F5B107 /* output.cc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = output.cc; path = absl/strings/internal/str_format/output.cc; sourceTree = "<group>"; };
 		611A2996CA55EFB510F9FDB643BA1DEB /* gpr_types.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = gpr_types.h; path = include/grpc/impl/codegen/gpr_types.h; sourceTree = "<group>"; };
 		613039715E8D19FC0E17C631C2250DD2 /* wakeup_fd_pipe.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = wakeup_fd_pipe.h; path = src/core/lib/iomgr/wakeup_fd_pipe.h; sourceTree = "<group>"; };
-		613743BE80D369D719D5C3423DCC2121 /* leveldb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = leveldb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		615F8ADCD3B334033ED3BFE250074753 /* custom_tag.upb.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = custom_tag.upb.h; path = "src/core/ext/upb-generated/envoy/type/tracing/v2/custom_tag.upb.h"; sourceTree = "<group>"; };
 		616F4366E3B8F8F27753832F71D4BC69 /* grpc_shadow_boringssl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = grpc_shadow_boringssl.h; path = src/core/tsi/grpc_shadow_boringssl.h; sourceTree = "<group>"; };
 		61737C1C0CD8F4A0AB68FC425194FC7B /* deprecation.upb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = deprecation.upb.c; path = "src/core/ext/upb-generated/envoy/annotations/deprecation.upb.c"; sourceTree = "<group>"; };
@@ -11345,7 +11343,6 @@
 				F638B3CC4C192FEFFEA295A3EBF0F115 /* FirebaseCore.framework in Frameworks */,
 				1E4B5EB38E1B6A3F0BB325F2922C1296 /* Foundation.framework in Frameworks */,
 				36910AFE1AAA7F771F250E6478059813 /* grpcpp.framework in Frameworks */,
-				034EF25DA20B4272E0F62269FAB387F4 /* leveldb.framework in Frameworks */,
 				67FD13A501E8740D1FFEF7D46D1153E7 /* MobileCoreServices.framework in Frameworks */,
 				39AD16B3A8F582C49427C49AE907A474 /* nanopb.framework in Frameworks */,
 				B678B2ADF003941DB77F17A09477E9E8 /* SystemConfiguration.framework in Frameworks */,
@@ -12222,7 +12219,6 @@
 				E80A25184723DB0E8A7C19363BA53D3C /* grpc.framework */,
 				139A7F6E608027CEE532F83FB0FE42AF /* grpcpp.framework */,
 				C1BAC98F57B5C508D63EA841E345596F /* GTMSessionFetcher.framework */,
-				613743BE80D369D719D5C3423DCC2121 /* leveldb.framework */,
 				5D493B565D6F1282FAE27C2AE5B1B646 /* nanopb.framework */,
 				780167E6A69FAE7CC51628255816CDC4 /* openssl_grpc.framework */,
 				12025A3620D1D0D29DF0ED3A5A77C13E /* iOS */,

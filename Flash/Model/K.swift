@@ -26,6 +26,7 @@ struct K{
         static let requestedUserMailField = "requestedUserMail"
         static let requestedUserNameField = "requestetUserName"
         static let messageIDsField = "messageIDs"
+        static let isDeletedField = "isDeleted"
         
         }
 }

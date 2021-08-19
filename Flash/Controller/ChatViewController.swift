@@ -138,18 +138,18 @@ class ChatViewController: UIViewController {
                 }
                 
                 //Get the current database Data of the current chat
-                self.db.collection("chats").document(self.chatID).getDocument { document, error in
+                self.db.collection(K.Firestore.chatIDCollection).document(self.chatID).getDocument { document, error in
                     
                     if let document = document, document.exists{
                         
                         //Store the current messages Array
-                        if let oldMessages = document.data()?["messages"] as? [String]{
+                        if let oldMessages = document.data()?[K.Firestore.messageIDsField] as? [String]{
                             
                             //Add new generated Messages to the loacal storage (DataBase for table view)
                             updatedMessages = oldMessages + [newMessageID]
                             
                             //Push the local changes to firebase
-                            self.db.collection("chats").document(self.chatID).updateData(["messages" : updatedMessages])
+                            self.db.collection("chats").document(self.chatID).updateData([K.Firestore.messageIDsField : updatedMessages])
                             
                             //Scroll to the bottom of the chat table view
                             DispatchQueue.main.async {

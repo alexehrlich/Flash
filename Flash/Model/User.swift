@@ -59,12 +59,22 @@ struct User: Hashable {
         }
         return temp
     }
+    
+    mutating func removeChat(for id: String){
+        
+        for i in 0..<chats.count{
+            
+            if chats[i].id == id{
+                chats.remove(at: i)
+                break
+            }
+        }
+    }
 }
 
 struct Chat: Hashable{
     var partnerMail: String
     var partnerName: String
     var id: String
-    
 }
 

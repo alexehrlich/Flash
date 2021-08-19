@@ -33,6 +33,7 @@
 		1D9095B926A014D3008D4BE1 /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9095B826A014D3008D4BE1 /* K.swift */; };
 		1DB5A53D269AB15D00756904 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5A53B269AB15D00756904 /* MessageCell.swift */; };
 		1DB5A53E269AB15D00756904 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DB5A53C269AB15D00756904 /* MessageCell.xib */; };
+		1DD470AE26BF96B0002196C1 /* DeleteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD470AD26BF96B0002196C1 /* DeleteImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		1D9095B826A014D3008D4BE1 /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		1DB5A53B269AB15D00756904 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		1DB5A53C269AB15D00756904 /* MessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		1DD470AD26BF96B0002196C1 /* DeleteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteImageView.swift; sourceTree = "<group>"; };
 		27A2BC73F8D9A477CF79B97D /* Pods-Flash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flash.release.xcconfig"; path = "Target Support Files/Pods-Flash/Pods-Flash.release.xcconfig"; sourceTree = "<group>"; };
 		66B77E5F6B52AD2BF1576C71 /* Pods-Flash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flash.debug.xcconfig"; path = "Target Support Files/Pods-Flash/Pods-Flash.debug.xcconfig"; sourceTree = "<group>"; };
 		76D5D05496F6648FF4B4B1C0 /* Pods_Flash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,6 +161,7 @@
 				1D87D70A26A7DA5C00C69D9F /* PageTwoView.xib */,
 				1D87D70C26A8186800C69D9F /* PageThreeView.xib */,
 				1D87D70E26A8187A00C69D9F /* PageThreeView.swift */,
+				1DD470AD26BF96B0002196C1 /* DeleteImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				1D9095B926A014D3008D4BE1 /* K.swift in Sources */,
 				1D24B9A62699608300FED9B4 /* ChatViewController.swift in Sources */,
 				1D87D70926A7DA4000C69D9F /* PageTwoView.swift in Sources */,
+				1DD470AE26BF96B0002196C1 /* DeleteImageView.swift in Sources */,
 				1D87D70F26A8187A00C69D9F /* PageThreeView.swift in Sources */,
 				1D4BC970269807540090F456 /* RegisterViewController.swift in Sources */,
 			);
@@ -461,6 +465,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 66B77E5F6B52AD2BF1576C71 /* Pods-Flash.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -482,6 +487,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 27A2BC73F8D9A477CF79B97D /* Pods-Flash.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;

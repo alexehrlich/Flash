@@ -95,7 +95,7 @@
     <resources>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="TitleColorBlue">
-            <color red="0.16078431372549018" green="0.23137254901960785" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

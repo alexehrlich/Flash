@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="SCq-aE-Hqn">
-                                <rect key="frame" x="20.5" y="790" width="373" height="50"/>
+                                <rect key="frame" x="20" y="790" width="374" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yM7-OM-AFe">
-                                        <rect key="frame" x="0.0" y="0.0" width="159" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="159.5" height="50"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="25"/>
                                         <color key="tintColor" name="TitleColorBlue"/>
                                         <state key="normal" title="Log in">
@@ -33,7 +33,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uKL-nf-8BF">
-                                        <rect key="frame" x="214" y="0.0" width="159" height="50"/>
+                                        <rect key="frame" x="214.5" y="0.0" width="159.5" height="50"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
                                         <state key="normal" title="Sign up">
                                             <color key="titleColor" name="TitleColorBlue"/>
@@ -48,18 +48,18 @@
                                 </constraints>
                             </stackView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rV-uP-jU1">
-                                <rect key="frame" x="20.5" y="168.5" width="373" height="559"/>
+                                <rect key="frame" x="20" y="170" width="374" height="556"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wm3-hV-Wiw" userLabel="Page 3" customClass="PageThreeView" customModule="Flash" customModuleProvider="target">
-                                        <rect key="frame" x="746" y="0.0" width="372.5" height="559"/>
+                                        <rect key="frame" x="748.5" y="0.0" width="374" height="556"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="haN-dr-HoD" userLabel="Page1" customClass="PageOneView" customModule="Flash" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="373" height="559"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="556"/>
                                         <color key="backgroundColor" systemColor="systemBlueColor"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nu0-e2-Qm6" userLabel="Page2" customClass="PageTwoView" customModule="Flash" customModuleProvider="target">
-                                        <rect key="frame" x="373" y="0.0" width="373" height="559"/>
+                                        <rect key="frame" x="374" y="0.0" width="374.5" height="556"/>
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <color key="tintColor" red="0.52156862749999999" green="0.83921568629999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
@@ -70,7 +70,6 @@
                                     <constraint firstItem="wm3-hV-Wiw" firstAttribute="leading" secondItem="nu0-e2-Qm6" secondAttribute="trailing" id="61n-Sq-wic"/>
                                     <constraint firstAttribute="trailing" secondItem="wm3-hV-Wiw" secondAttribute="trailing" id="9NM-iV-yvw"/>
                                     <constraint firstItem="wm3-hV-Wiw" firstAttribute="top" secondItem="5rV-uP-jU1" secondAttribute="top" id="EKV-bW-S91"/>
-                                    <constraint firstAttribute="width" secondItem="5rV-uP-jU1" secondAttribute="height" multiplier="1:1.5" id="Exz-Ph-Vpp"/>
                                     <constraint firstAttribute="bottom" secondItem="nu0-e2-Qm6" secondAttribute="bottom" id="KIh-v9-1Jh"/>
                                     <constraint firstItem="haN-dr-HoD" firstAttribute="width" secondItem="5rV-uP-jU1" secondAttribute="width" id="McE-T4-Itu"/>
                                     <constraint firstAttribute="bottom" secondItem="wm3-hV-Wiw" secondAttribute="bottom" id="Rs2-8y-ng6"/>
@@ -87,7 +86,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="Ppd-eU-bhw"/>
                             </scrollView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="nac-gb-Ou3">
-                                <rect key="frame" x="146.5" y="757.5" width="121.5" height="27.5"/>
+                                <rect key="frame" x="146.5" y="756" width="121.5" height="27.5"/>
                                 <color key="pageIndicatorTintColor" red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="0.50444930120809184" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="currentPageIndicatorTintColor" name="TitleColorBlue"/>
                             </pageControl>
@@ -97,17 +96,23 @@
                         <constraints>
                             <constraint firstItem="5rV-uP-jU1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5PT-uE-DGd"/>
                             <constraint firstItem="SCq-aE-Hqn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A6k-z0-LAS"/>
-                            <constraint firstItem="5rV-uP-jU1" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="Dgg-WA-yFe"/>
                             <constraint firstItem="nac-gb-Ou3" firstAttribute="top" secondItem="5rV-uP-jU1" secondAttribute="bottom" constant="30" id="NEI-a1-UYT"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5rV-uP-jU1" secondAttribute="trailing" constant="20" id="RAP-md-hUH"/>
+                            <constraint firstItem="SCq-aE-Hqn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="bvs-JF-kyH"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SCq-aE-Hqn" secondAttribute="trailing" constant="20" id="dYH-C8-wbE"/>
+                            <constraint firstItem="5rV-uP-jU1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dlj-lM-XHL"/>
                             <constraint firstItem="5rV-uP-jU1" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eWm-dy-eK3"/>
-                            <constraint firstItem="SCq-aE-Hqn" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="gA4-Sc-rmJ"/>
+                            <constraint firstItem="5rV-uP-jU1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="lOY-fw-AnU"/>
                             <constraint firstItem="nac-gb-Ou3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ngX-68-SYK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SCq-aE-Hqn" secondAttribute="bottom" constant="22" id="vKi-Qf-vao"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Welcome" id="Ygx-Ow-Fh0"/>
+                    <navigationItem key="navigationItem" title="Flash" id="Ygx-Ow-Fh0"/>
                     <connections>
                         <outlet property="pageControl" destination="nac-gb-Ou3" id="4mS-Zi-fbV"/>
+                        <outlet property="pageOneView" destination="haN-dr-HoD" id="Lz5-R7-XG2"/>
+                        <outlet property="pageThreeView" destination="wm3-hV-Wiw" id="voz-RK-LPi"/>
+                        <outlet property="pageTwoView" destination="nu0-e2-Qm6" id="wic-pO-9Oc"/>
                         <outlet property="scrollView" destination="5rV-uP-jU1" id="C8o-al-OKb"/>
                     </connections>
                 </viewController>
@@ -339,6 +344,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="chatListCollectionView" destination="j6a-V6-97Y" id="pYL-XC-2gK"/>
+                        <outlet property="collectionViewBottomConstraint" destination="h8A-OE-DZ9" id="tlT-Dw-FTq"/>
                         <outlet property="searchBackground" destination="JIU-e0-Jnp" id="PZr-nn-Wh0"/>
                         <outlet property="searchTextField" destination="7Z6-s8-WSL" id="5gh-5S-cNb"/>
                         <segue destination="dDc-Av-ygX" kind="show" identifier="ListToChat" id="a3B-kk-YgE"/>
@@ -346,7 +352,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vxg-ep-hIg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2946" y="196"/>
+            <point key="canvasLocation" x="2944.9275362318845" y="195.53571428571428"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="EUT-4h-tEe">
@@ -633,7 +639,7 @@
         <image name="paperplane.fill" catalog="system" width="128" height="118"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <namedColor name="TitleColorBlue">
-            <color red="0.16078431372549018" green="0.23137254901960785" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -14,6 +14,9 @@ class ContactCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var contactProfileImage: UIImageView!
     @IBOutlet weak var chatNameLabel: UILabel!
     
+    var chatID = NSAttributedString()
+    var chatPartnerMail = String()
+    var chatPartnerName = String()
     
     override func awakeFromNib() {
         super.awakeFromNib()

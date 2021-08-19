@@ -14,20 +14,51 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var chatListCollectionView: UICollectionView!
     @IBOutlet weak var searchBackground: UIView!
     @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var collectionViewBottomConstraint: NSLayoutConstraint!
     
     //CollectionView Setup
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
     
-    var filteredChats = User.shared.chats
+    var filteredChats = User.shared.chats {
+        didSet{
+            if filteredChats.isEmpty{
+                userPromptView.isHidden = false
+            }else{
+                userPromptView.isHidden = true
+            }
+        }
+    }
+    
+    var userPromptView = UIView()
     
     //State Variables
     var tappedCellIndex = 0
+
     
     let db = Firestore.firestore()
     
+    var deleteView : DeleteImageView?
+    var currentlyDraggedCell : ContactCollectionViewCell?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        userPromptView = createUserPrompt()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        deleteView = DeleteImageView(frame: CGRect(origin: CGPoint(x: self.view.center.x - 50, y: self.view.frame.size.height - 120), size: CGSize(width: 100, height: 100)))
+        deleteView!.image = UIImage(systemName: "trash.circle.fill")
+        deleteView?.tintColor = UIColor(named: "TitleColorBlue")
+        deleteView!.contentMode = .scaleAspectFit
+        deleteView?.isUserInteractionEnabled = true
+        self.view.addSubview(deleteView!)
+        deleteView?.isHidden = true
+        deleteView?.alpha = 0
+        deleteView?.delegate = self
         
         navigationController?.navigationBar.tintColor = UIColor(named: "TitleColorBlue")
         navigationItem.hidesBackButton = true
@@ -35,6 +66,9 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
         //Setup collectionView
         chatListCollectionView.delegate = self
         chatListCollectionView.dataSource = self
+        chatListCollectionView.dragDelegate = self
+
+        chatListCollectionView.dragInteractionEnabled = true
         chatListCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "chatContactCell")
         
         searchBackground.layer.cornerRadius = searchBackground.frame.height * 0.2
@@ -58,6 +92,8 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                 }else{
                     
                     if let snapshot = snapshot{
+                        
+                        
                         for document in snapshot.documents{
                             
                             let chatData = document.data()
@@ -79,6 +115,23 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                                     //Push local changes to firebase DB
                                     self.db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.chatIDsField : User.shared.getChatIDs(), K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(), K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames()])
                                     
+                                    //Add SnapshotListener to the newChat
+                                    self.db.collection(K.Firestore.chatIDCollection).document(chatID).addSnapshotListener { snapshot, error in
+                                        
+                                        if let snapshot = snapshot{
+                                            
+                                            if let deleted = snapshot.data()?[K.Firestore.isDeletedField] as? Bool {
+                                                if deleted == true {
+                                                    self.deleteUser(with: chatID){
+                                                        //Delete Chat in DB
+                                                        self.db.collection(K.Firestore.chatIDCollection).document(chatID).delete()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    
                                     if let lowercasedSearchString = self.searchTextField.text?.lowercased(){
                                         self.filteredChats = User.shared.chats.filter { $0.partnerName.lowercased().hasPrefix(lowercasedSearchString)}
                                     }else if self.searchTextField.text == ""{
@@ -94,8 +147,45 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                     }
                 }
             }
+            self.updateModelfromFirebaseDataBase()
         }
     }
+    
+    private func createUserPrompt() -> UIView{
+        
+        let label = UILabel()
+        label.text = "Du hast noch keine Chats. Tippe oben liks auf den Stift um einen neuen Chat zu erstellen."
+        label.font = UIFont(name: "Helvetica Neue", size: 20)
+        label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        label.numberOfLines = 0
+        
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "square.and.pencil")
+        imageView.tintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        
+        let stackView = UIStackView(arrangedSubviews: [label, imageView])
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        stackView.layer.cornerRadius = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(stackView)
+        
+        let horizontalConstraint = NSLayoutConstraint(item: stackView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
+        let verticalConstraint = NSLayoutConstraint(item: stackView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: stackView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.width, multiplier: 0.6, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: stackView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.width, multiplier: 0.6, constant: 0)
+        NSLayoutConstraint.activate([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+        
+        stackView.isHidden = true
+        
+        return stackView
+    }
+    
+
     
     
     //Fetch the data from Firebase for the local entered email adress
@@ -188,7 +278,21 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                                 db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.chatIDsField : User.shared.getChatIDs(), K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(), K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames()], completion: nil)
                                 
                                 //--UPDATE THE CHAT IN FIRESTORE
-                                newChat.setData([K.Firestore.senderMailField : User.shared.email, K.Firestore.senderNameField : User.shared.chatname, K.Firestore.requestedUserMailField : requestedPersonMailString, K.Firestore.requestedUserNameField : chatName, K.Firestore.messageIDsField : [String]()])
+                                newChat.setData([K.Firestore.senderMailField : User.shared.email, K.Firestore.senderNameField : User.shared.chatname, K.Firestore.requestedUserMailField : requestedPersonMailString, K.Firestore.requestedUserNameField : chatName, K.Firestore.messageIDsField : [String](), K.Firestore.isDeletedField : false])
+                                
+                                
+                                //Add SnapshotListener to the newChat
+                                self.db.collection(K.Firestore.chatIDCollection).document(newChatID).addSnapshotListener { snapshot, error in
+                                    
+                                    if let snapshot = snapshot{
+                                        
+                                        if let deleted = snapshot.data()?[K.Firestore.isDeletedField] as? Bool {
+                                            if deleted == true {
+                                                deleteUser(with: newChatID, completion: nil)
+                                            }
+                                        }
+                                    }
+                                }
                                 
                                 DispatchQueue.main.async {
                                     self.chatListCollectionView.reloadData()
@@ -226,6 +330,7 @@ extension ChatListViewController: UICollectionViewDelegate, UICollectionViewData
         
         if let cell = chatListCollectionView.dequeueReusableCell(withReuseIdentifier: "chatContactCell", for: indexPath) as? ContactCollectionViewCell{
             
+            cell.chatID = NSAttributedString(string: filteredChats[indexPath.row].id)
             cell.chatNameLabel.text = filteredChats[indexPath.row].partnerName
             
             return cell
@@ -281,4 +386,94 @@ extension ChatListViewController: UITextFieldDelegate{
         chatListCollectionView.reloadData()
     }
 }
+
+//MARK: -UICollectionViewDragDelegate
+
+extension ChatListViewController: UICollectionViewDragDelegate{
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        
+        collectionViewBottomConstraint.constant = 100
+        currentlyDraggedCell = chatListCollectionView.cellForItem(at: indexPath) as? ContactCollectionViewCell
+
+            UIView.animate(withDuration: 0.3) {
+                self.currentlyDraggedCell?.transform = CGAffineTransform.identity.scaledBy(x: 0.4, y: 0.4)
+                self.deleteView?.isHidden = false
+                self.deleteView?.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        return dragItems(at: indexPath)
+    }
+    
+    private func dragItems(at indexPath: IndexPath) -> [UIDragItem]{
+        if let id = (chatListCollectionView.cellForItem(at: indexPath) as? ContactCollectionViewCell)?.chatID{
+            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: id))
+            dragItem.localObject = id
+            return  [dragItem]
+        }
+        return []
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
+        UIView.animate(withDuration: 0.3) {
+            self.currentlyDraggedCell?.transform = CGAffineTransform.identity
+            self.deleteView?.isHidden = true
+            self.deleteView?.alpha = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+}
+
+extension ChatListViewController: DeleteImageViewDropDelegate{
+    
+    func deleteViewDropInteraction(_ deleteView: DeleteImageView, didReceiveDrop id: NSAttributedString) {
+        deleteUser(with: id.string, completion: nil)
+        self.collectionViewBottomConstraint.constant = 0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.deleteView?.isHidden = true
+            self.deleteView?.alpha = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func deleteViewDropInteraction(_ deleteView: DeleteImageView, didEnterDropZone: Bool) {
+        
+//        UIView.animate(withDuration: 0.3) {
+//            self.currentlyDraggedCell?.transform = CGAffineTransform.identity.scaledBy(x: 0.7, y: 0.7)
+//        }
+    }
+    
+    
+    private func deleteUser(with id: String, completion: (() -> Void)?){
+        
+        //Delete chatID-item in chatID-collection
+        //The deleting User sets the "isDeletedField" so the Listener at the chat partner gets called
+        self.db.collection(K.Firestore.chatIDCollection).document(id).updateData([K.Firestore.isDeletedField : true])
+        
+        //Delete Chat partner and chatID for this user
+        User.shared.removeChat(for: id)
+        
+        self.db.collection(K.Firestore.userCollection).document(User.shared.email).updateData(
+            [
+                K.Firestore.chatPartnersMailField : User.shared.getChatPartnerMails(),
+                K.Firestore.chatPartnersNameField : User.shared.getChatPartnerNames(),
+                K.Firestore.chatIDsField : User.shared.getChatIDs()
+            ]) { error in
+            
+            if let e = error {
+                print("Update went wrong: \(e.localizedDescription)")
+            }else{
+                //The deleted chatPartner calls the compeltion handler in his listener and finally deltes the caht from the db.
+                if completion != nil {
+                    completion!()
+                }
+            
+                self.updateModelfromFirebaseDataBase()
+            }
+        }
+    }
+}
+
+
 
