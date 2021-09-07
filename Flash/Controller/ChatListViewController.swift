@@ -127,6 +127,9 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                                                         self.db.collection(K.Firestore.chatIDCollection).document(chatID).delete()
                                                     }
                                                 }
+                                            }else{
+                                                //This must be a new Message
+                                                
                                             }
                                         }
                                     }
@@ -149,6 +152,12 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
             }
             self.updateModelfromFirebaseDataBase()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        //When we come from the chat
+        updateModelfromFirebaseDataBase()
     }
     
     private func createUserPrompt() -> UIView{
@@ -272,6 +281,7 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                                 //--UPDATE THE REQUESTING PERSON LOCALLY AND IN FIREBASE
                                 //Add this ID and the chatPartners Mail to the current users local Model
                                 User.shared.chats.append(Chat(partnerMail: requestedPersonMailString, partnerName: chatName, id: newChatID))
+                                
                                 filteredChats = User.shared.chats
                                 
                                 //Push the local updated changes to the firebase DB for the current user
@@ -332,6 +342,8 @@ extension ChatListViewController: UICollectionViewDelegate, UICollectionViewData
             
             cell.chatID = NSAttributedString(string: filteredChats[indexPath.row].id)
             cell.chatNameLabel.text = filteredChats[indexPath.row].partnerName
+            cell.hasNewMessage = false
+            cell.setupUI()
             
             return cell
         }

@@ -51,6 +51,26 @@ class ChatViewController: UIViewController {
                 }
             }
         }
+        
+        self.db.collection(K.Firestore.chatIDCollection).document(chatID).addSnapshotListener { snapshot, error in
+           
+            
+            if let snapshot = snapshot{
+                
+                if let deleted = snapshot.data()?[K.Firestore.isDeletedField] as? Bool {
+                    if deleted == true {
+                        
+                        let alertVc = UIAlertController(title: "\(self.chatPartner) hat die Unterhaltung beendet.", message: nil, preferredStyle: .alert)
+                        let action = UIAlertAction(title: "Okay", style: .default) { action in
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                        
+                        alertVc.addAction(action)
+                        self.present(alertVc, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -107,7 +127,6 @@ class ChatViewController: UIViewController {
     
     private func scrollMessageTableViewToBottom(){
         if self.messages.count > 0 {
-            self.messageTextField.text = ""
             self.messageTableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
         }
     }
@@ -149,10 +168,11 @@ class ChatViewController: UIViewController {
                             updatedMessages = oldMessages + [newMessageID]
                             
                             //Push the local changes to firebase
-                            self.db.collection("chats").document(self.chatID).updateData([K.Firestore.messageIDsField : updatedMessages])
+                            self.db.collection(K.Firestore.chatIDCollection).document(self.chatID).updateData([K.Firestore.messageIDsField : updatedMessages])
                             
                             //Scroll to the bottom of the chat table view
                             DispatchQueue.main.async {
+                                self.messageTextField.text = ""
                                 self.scrollMessageTableViewToBottom()
                             }
                         }

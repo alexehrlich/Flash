@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -34,12 +35,18 @@
                                                 </constraints>
                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                             </imageView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ObQ-hx-Zeq">
+                                                <rect key="frame" x="177.5" y="12" width="33.5" height="33.5"/>
+                                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="ObQ-hx-Zeq" firstAttribute="top" secondItem="dbo-fx-crq" secondAttribute="top" constant="12" id="27i-1c-0vb"/>
                                             <constraint firstItem="i5Y-Ru-MTS" firstAttribute="centerY" secondItem="dbo-fx-crq" secondAttribute="centerY" id="Nqu-8f-9sm"/>
                                             <constraint firstItem="i5Y-Ru-MTS" firstAttribute="centerX" secondItem="dbo-fx-crq" secondAttribute="centerX" id="gq3-Xp-NSK"/>
                                             <constraint firstItem="i5Y-Ru-MTS" firstAttribute="height" secondItem="dbo-fx-crq" secondAttribute="height" multiplier="0.7" id="ugv-wN-Cjz"/>
+                                            <constraint firstAttribute="trailing" secondItem="ObQ-hx-Zeq" secondAttribute="trailing" constant="12" id="xtL-VQ-5vR"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWm-Pf-p9g">
@@ -70,8 +77,10 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="sse-a5-c4Y" secondAttribute="trailing" id="3VQ-XL-mQw"/>
                             <constraint firstItem="sse-a5-c4Y" firstAttribute="leading" secondItem="BrM-WN-fSQ" secondAttribute="leading" id="QCL-gt-49y"/>
+                            <constraint firstItem="ObQ-hx-Zeq" firstAttribute="height" secondItem="BrM-WN-fSQ" secondAttribute="height" multiplier="0.150224" id="QcI-LB-njj"/>
                             <constraint firstAttribute="bottom" secondItem="sse-a5-c4Y" secondAttribute="bottom" id="ThR-ui-CPk"/>
                             <constraint firstItem="sse-a5-c4Y" firstAttribute="top" secondItem="BrM-WN-fSQ" secondAttribute="top" id="jaB-Ho-Va7"/>
+                            <constraint firstItem="ObQ-hx-Zeq" firstAttribute="width" secondItem="BrM-WN-fSQ" secondAttribute="width" multiplier="0.150224" id="yFc-Mc-klF"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -88,6 +97,7 @@
                 <outlet property="cellBackgroundView" destination="BrM-WN-fSQ" id="DBg-m4-AYf"/>
                 <outlet property="chatNameLabel" destination="4Hh-di-84I" id="ww1-Ma-f4E"/>
                 <outlet property="contactProfileImage" destination="i5Y-Ru-MTS" id="OZC-r0-NmT"/>
+                <outlet property="newMessageDot" destination="ObQ-hx-Zeq" id="rTP-dJ-33T"/>
             </connections>
             <point key="canvasLocation" x="338.40579710144931" y="167.07589285714286"/>
         </collectionViewCell>
@@ -97,5 +107,8 @@
         <namedColor name="TitleColorBlue">
             <color red="0.16099999845027924" green="0.23100000619888306" blue="0.37299999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

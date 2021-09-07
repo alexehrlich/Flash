@@ -3,7 +3,6 @@
 
 target 'Flash' do use_frameworks!
 
-
   # Pods for Flash
 pod 'Firebase/Auth' 
 pod 'Firebase/Firestore'
