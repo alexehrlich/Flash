@@ -127,9 +127,6 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                                                         self.db.collection(K.Firestore.chatIDCollection).document(chatID).delete()
                                                     }
                                                 }
-                                            }else{
-                                                //This must be a new Message
-                                                
                                             }
                                         }
                                     }
@@ -149,8 +146,8 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                         }
                     }
                 }
+                self.updateModelfromFirebaseDataBase()
             }
-            self.updateModelfromFirebaseDataBase()
         }
     }
     
@@ -205,9 +202,11 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                 if let document = document, document.exists{
                     let data = document.data()
                     
-                    if let chatPartnersMail = data?[K.Firestore.chatPartnersMailField] as? [String],  let chatPartnersName = data?[K.Firestore.chatPartnersNameField] as? [String],let chatName = data?[K.Firestore.chatNameField] as? String, let chats = data?[K.Firestore.chatIDsField] as? [String]{
+                    if let chatPartnersMail = data?[K.Firestore.chatPartnersMailField] as? [String],  let chatPartnersName = data?[K.Firestore.chatPartnersNameField] as? [String],let chatName = data?[K.Firestore.chatNameField] as? String, let chats = data?[K.Firestore.chatIDsField] as? [String], let unansweredChats = data?[K.Firestore.unansweredChatsField] as? [String]{
                         
                         User.shared.chats.removeAll()
+                        User.shared.unansweredChats = Set(unansweredChats)
+    
                         User.shared.chatname = chatName
                         
                         for i in chatPartnersMail.indices{
@@ -231,7 +230,7 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
             
             if let destVC = segue.destination as? ChatViewController{
                 destVC.title = User.shared.getChatPartnerNames()[tappedCellIndex]
-                destVC.chatPartner = User.shared.getChatPartnerMails()[tappedCellIndex]
+                destVC.chatPartnerMail = User.shared.getChatPartnerMails()[tappedCellIndex]
                 destVC.chatID = User.shared.getChatIDs()[tappedCellIndex]
             }
         }
@@ -304,6 +303,28 @@ class ChatListViewController: UIViewController, UIGestureRecognizerDelegate{
                                     }
                                 }
                                 
+                                
+                                //append the message to the chatpartners unanswered Message
+                                //Get the current unanswered messages from the chat partner
+                                self.db.collection(K.Firestore.userCollection).document(requestedPersonMailString).getDocument { document, error in
+                                    
+                                    if let document = document, document.exists{
+                                        
+                                        if let currentUnansweredChatIDs = document.data()?[K.Firestore.unansweredChatsField] as? [String]{
+                                            
+                                            if !currentUnansweredChatIDs.contains(newChatID){
+                                                
+                                                let updatedUnansweredChatIDs : [String] = currentUnansweredChatIDs + [newChatID]
+                                                
+                                                //push the update to the Database
+                                                self.db.collection(K.Firestore.userCollection).document(requestedPersonMailString).updateData(
+                                                    [K.Firestore.unansweredChatsField : updatedUnansweredChatIDs])
+                                            }
+                                        }
+                                    }
+                                }
+
+                                
                                 DispatchQueue.main.async {
                                     self.chatListCollectionView.reloadData()
                                 }
@@ -342,7 +363,7 @@ extension ChatListViewController: UICollectionViewDelegate, UICollectionViewData
             
             cell.chatID = NSAttributedString(string: filteredChats[indexPath.row].id)
             cell.chatNameLabel.text = filteredChats[indexPath.row].partnerName
-            cell.hasNewMessage = false
+            cell.hasNewMessage = User.shared.unansweredChats.contains(filteredChats[indexPath.row].id)
             cell.setupUI()
             
             return cell

@@ -12,6 +12,7 @@ struct User: Hashable {
     var chatname = String()
     var email = String()
     var chats = [Chat]()
+    var unansweredChats = Set<String>()
     
     var chatPartnerNamesDictioanry = [String : String]()
     

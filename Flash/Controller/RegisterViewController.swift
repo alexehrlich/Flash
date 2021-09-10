@@ -65,7 +65,7 @@ class RegisterViewController: UIViewController {
                         if !receivedDoc.exists{
                             //Create new user
                             print("User does not exsist and will be created.")
-                            self.db.collection(K.Firestore.userCollection).document(emailString).setData([K.Firestore.chatNameField: chatname, K.Firestore.chatPartnersMailField : [String](), K.Firestore.chatPartnersNameField: [String]() ,K.Firestore.chatIDsField : [String]()]) { error in
+                            self.db.collection(K.Firestore.userCollection).document(emailString).setData([K.Firestore.chatNameField: chatname, K.Firestore.chatPartnersMailField : [String](), K.Firestore.chatPartnersNameField: [String]() ,K.Firestore.chatIDsField : [String](), K.Firestore.unansweredChatsField : [String]()]) { error in
                                 if let e = error {
                                     print("Something went wrong, \(e)")
                                 }else{

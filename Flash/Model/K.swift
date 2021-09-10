@@ -19,6 +19,7 @@ struct K{
         static let chatPartnersMailField = "chatPartPartnersMail"
         static let chatPartnersNameField = "chatPartPartnersName"
         static let chatIDsField = "userChatIDs"
+        static let unansweredChatsField = "unanswered Chats"
         
         //Chat Fields
         static let senderMailField = "senderMail"

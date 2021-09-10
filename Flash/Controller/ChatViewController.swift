@@ -24,16 +24,17 @@ class ChatViewController: UIViewController {
     
     var messages = [Message]()
     
-    var chatPartner = String()
+    var chatPartnerMail = String()
     var chatID = String()
     let db = Firestore.firestore()
-    
+
+
     override func viewWillAppear(_ animated: Bool) {
         
         //Add snapshotListner
         DispatchQueue.global(qos: .userInitiated).async {
             self.db.collection(self.chatID).order(by: "timeStamp").addSnapshotListener { querySnapshot, error in
-                
+            
                 self.messages.removeAll()
                 
                 if let snapshotDocuments = querySnapshot?.documents{
@@ -43,7 +44,7 @@ class ChatViewController: UIViewController {
                             self.messages.append(Message(sender: User(chatname: "TODO", email: sender), body: body))
                         }
                     }
-                    
+
                     DispatchQueue.main.async {
                         self.messageTableView.reloadData()
                         self.scrollMessageTableViewToBottom()
@@ -52,15 +53,14 @@ class ChatViewController: UIViewController {
             }
         }
         
+    
         self.db.collection(K.Firestore.chatIDCollection).document(chatID).addSnapshotListener { snapshot, error in
-           
-            
             if let snapshot = snapshot{
                 
                 if let deleted = snapshot.data()?[K.Firestore.isDeletedField] as? Bool {
                     if deleted == true {
                         
-                        let alertVc = UIAlertController(title: "\(self.chatPartner) hat die Unterhaltung beendet.", message: nil, preferredStyle: .alert)
+                        let alertVc = UIAlertController(title: "\(self.chatPartnerMail) hat die Unterhaltung beendet.", message: nil, preferredStyle: .alert)
                         let action = UIAlertAction(title: "Okay", style: .default) { action in
                             self.navigationController?.popViewController(animated: true)
                         }
@@ -90,6 +90,16 @@ class ChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHideAction), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         textFieldBackground.layer.cornerRadius = 10
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        //delete the chat from unanswered chats, becasue user tapped on chat
+        User.shared.unansweredChats.remove(chatID)
+        //Push update to database
+        self.db.collection(K.Firestore.userCollection).document(User.shared.email).updateData([K.Firestore.unansweredChatsField : Array(User.shared.unansweredChats)])
+        
+        
     }
     
     @objc func keyboardWillshowAction(notification: NSNotification){
@@ -174,6 +184,26 @@ class ChatViewController: UIViewController {
                             DispatchQueue.main.async {
                                 self.messageTextField.text = ""
                                 self.scrollMessageTableViewToBottom()
+                            }
+                        }
+                    }
+                }
+                
+                //append the message to the chatpartners unanswered Message
+                //Get the current unanswered messages from the chat partner
+                self.db.collection(K.Firestore.userCollection).document(self.chatPartnerMail).getDocument { document, error in
+                    
+                    if let document = document, document.exists{
+                        
+                        if let currentUnansweredChatIDs = document.data()?[K.Firestore.unansweredChatsField] as? [String]{
+                            
+                            if !currentUnansweredChatIDs.contains(self.chatID){
+                                
+                                let updatedUnansweredChatIDs : [String] = currentUnansweredChatIDs + [self.chatID]
+                                
+                                //push the update to the Database
+                                self.db.collection(K.Firestore.userCollection).document(self.chatPartnerMail).updateData(
+                                    [K.Firestore.unansweredChatsField : updatedUnansweredChatIDs])
                             }
                         }
                     }
